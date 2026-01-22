@@ -1,0 +1,12 @@
+<a class="card post-card" [routerLink]="['/posts', post.id]">
+  <div class="img" [style.backgroundImage]="'url(' + post.image + ')'"></div>
+  <div class="content">
+    <div class="top">
+      <span class="category">{{ post.category }}</span>
+      <span class="date muted">{{ post.createdAt | date: 'mediumDate' }}</span>
+    </div>
+    <h3 class="title">{{ post.title }}</h3>
+    <p class="preview muted">{{ post.content | truncate: 140 }}</p>
+  </div>
+</a>
+

@@ -1,0 +1,31 @@
+.hero {
+  padding: 18px;
+  margin-bottom: 14px;
+  border-left: 4px solid rgba(22, 163, 74, 0.60);
+}
+
+.hero-inner h1 {
+  margin: 0 0 6px;
+  font-size: 28px;
+}
+
+.hero-inner p {
+  margin: 0;
+}
+
+.list .grid {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.col {
+  grid-column: span 4;
+}
+
+@media (max-width: 900px) {
+  .col { grid-column: span 6; }
+}
+
+@media (max-width: 560px) {
+  .col { grid-column: span 12; }
+}
+

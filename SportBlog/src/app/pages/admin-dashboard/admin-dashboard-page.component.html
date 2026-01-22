@@ -1,0 +1,68 @@
+<section class="card admin">
+  <div class="head">
+    <div>
+      <h1>Admin Dashboard</h1>
+      <p class="muted">Create, edit, and delete blog posts.</p>
+    </div>
+    <button class="btn" type="button" (click)="startCreate()">New Post</button>
+  </div>
+
+  <div class="grid">
+    <div class="left">
+      <div class="card inner">
+        <h2>{{ editingId ? 'Edit Post' : 'Create Post' }}</h2>
+
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <label class="muted" for="t">Title</label>
+          <input id="t" class="input" formControlName="title" />
+
+          <label class="muted" for="c">Category</label>
+          <input id="c" class="input" formControlName="category" placeholder="Football, Basketball, Fitness..." />
+
+          <label class="muted" for="i">Image URL</label>
+          <input id="i" class="input" formControlName="image" placeholder="https://..." />
+
+          <label class="muted" for="b">Content</label>
+          <textarea id="b" rows="7" formControlName="content"></textarea>
+
+          @if (errorMsg) { <p class="error">{{ errorMsg }}</p> }
+
+          <div class="actions">
+            @if (editingId) {
+              <button class="btn" type="button" (click)="cancelEdit()">Cancel</button>
+            }
+            <button class="btn primary" type="submit" [disabled]="isSaving || form.invalid">
+              {{ isSaving ? 'Saving…' : (editingId ? 'Update' : 'Create') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card inner">
+        <h2>All Posts</h2>
+
+        @if (posts$ | async; as posts) {
+          <div class="list">
+            @for (p of posts; track p.id) {
+              <div class="row">
+                <div class="info">
+                  <div class="title">{{ p.title }}</div>
+                  <div class="meta muted">{{ p.category }}</div>
+                </div>
+                <div class="row-actions">
+                  <button class="btn" type="button" (click)="startEdit(p)">Edit</button>
+                  <button class="btn danger" type="button" (click)="delete(p)">Delete</button>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="muted">Loading…</p>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+

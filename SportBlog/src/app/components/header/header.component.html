@@ -1,0 +1,34 @@
+<header class="header">
+  <div class="inner">
+    <a class="brand" routerLink="/">
+      <span class="badge">SB</span>
+      <span>SportBlog</span>
+    </a>
+
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a
+        *ngIf="(user$ | async)?.role === 'admin'"
+        routerLink="/admin"
+        routerLinkActive="active"
+      >
+        Admin
+      </a>
+    </nav>
+
+    <div class="right">
+      <ng-container *ngIf="user$ | async as user; else guest">
+        <span class="user">
+          <span class="name">{{ user.name }}</span>
+          <span class="role">({{ user.role }})</span>
+        </span>
+        <button class="btn" type="button" (click)="logout()">Logout</button>
+      </ng-container>
+
+      <ng-template #guest>
+        <a class="btn primary" routerLink="/auth">Login / Register</a>
+      </ng-template>
+    </div>
+  </div>
+</header>
+

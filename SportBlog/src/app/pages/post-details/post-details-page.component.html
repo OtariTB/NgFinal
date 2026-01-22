@@ -1,0 +1,71 @@
+<a class="back muted" routerLink="/">&larr; Back to posts</a>
+
+@if (post$ | async; as post) {
+  <article class="card post">
+    <div class="img" [style.backgroundImage]="'url(' + post.image + ')'"></div>
+    <div class="body">
+      <div class="meta">
+        <span class="pill">{{ post.category }}</span>
+        <span class="muted">{{ post.createdAt | date: 'medium' }}</span>
+      </div>
+      <h1 class="title">{{ post.title }}</h1>
+      <p class="muted">By {{ post.authorName }}</p>
+
+      <div class="content">
+        <p>{{ post.content }}</p>
+      </div>
+    </div>
+  </article>
+
+  <section class="comments card">
+    <div class="comments-head">
+      <h2>Comments</h2>
+      <span class="muted">Share your thoughts</span>
+    </div>
+
+    @if (comments$ | async; as comments) {
+      @if (comments.length === 0) {
+        <p class="muted">No comments yet.</p>
+      } @else {
+        <div class="comment-list">
+          @for (c of comments; track c.id) {
+            <div class="comment">
+              <div class="comment-top">
+                <strong>{{ c.userName }}</strong>
+                <span class="muted">{{ c.createdAt | date: 'short' }}</span>
+              </div>
+              <p class="muted">{{ c.text }}</p>
+            </div>
+          }
+        </div>
+      }
+    } @else {
+      <p class="muted">Loading comments…</p>
+    }
+
+    <div class="add">
+      @if (user$ | async; as user) {
+        <form [formGroup]="commentForm" (ngSubmit)="submitComment(post.id)">
+          <label class="muted" for="text">Add a comment as <strong>{{ user.name }}</strong></label>
+          <textarea id="text" rows="3" formControlName="text" placeholder="Write your comment..."></textarea>
+          @if (errorMsg) {
+            <p class="error">{{ errorMsg }}</p>
+          }
+          <div class="actions">
+            <button class="btn primary" type="submit" [disabled]="isSubmitting || commentForm.invalid">
+              {{ isSubmitting ? 'Posting…' : 'Post Comment' }}
+            </button>
+          </div>
+        </form>
+      } @else {
+        <p class="muted">
+          You must be logged in to comment.
+          <a class="link" routerLink="/auth">Login</a>
+        </p>
+      }
+    </div>
+  </section>
+} @else {
+  <p class="muted">Loading post…</p>
+}
+

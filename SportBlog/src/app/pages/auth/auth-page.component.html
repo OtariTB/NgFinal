@@ -1,0 +1,60 @@
+<section class="card auth">
+  <div class="tabs">
+    <button class="tab" type="button" [class.active]="mode === 'login'" (click)="setMode('login')">Login</button>
+    <button class="tab" type="button" [class.active]="mode === 'register'" (click)="setMode('register')">
+      Register
+    </button>
+  </div>
+
+  <div class="body">
+    @if (mode === 'login') {
+      <h1>Welcome back</h1>
+      <p class="muted">Use your account to comment. Admin can manage posts.</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+        <label class="muted" for="lemail">Email</label>
+        <input id="lemail" class="input" formControlName="email" type="email" placeholder="you@example.com" />
+
+        <label class="muted" for="lpw">Password</label>
+        <input id="lpw" class="input" formControlName="password" type="password" placeholder="••••" />
+
+        @if (errorMsg) { <p class="error">{{ errorMsg }}</p> }
+
+        <div class="actions">
+          <button class="btn primary" type="submit" [disabled]="isSubmitting || loginForm.invalid">
+            {{ isSubmitting ? 'Signing in…' : 'Login' }}
+          </button>
+        </div>
+      </form>
+
+      <div class="hint card">
+        <p class="muted"><strong>Demo accounts</strong></p>
+        <p class="muted">Admin: admin&#64;sportblog.com / admin123</p>
+        <p class="muted">User: user&#64;sportblog.com / user123</p>
+      </div>
+    } @else {
+      <h1>Create account</h1>
+      <p class="muted">Registration is mocked via API.</p>
+
+      <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+        <label class="muted" for="rname">Name</label>
+        <input id="rname" class="input" formControlName="name" type="text" placeholder="Your name" />
+
+        <label class="muted" for="remail">Email</label>
+        <input id="remail" class="input" formControlName="email" type="email" placeholder="you@example.com" />
+
+        <label class="muted" for="rpw">Password</label>
+        <input id="rpw" class="input" formControlName="password" type="password" placeholder="Min 4 chars" />
+
+        @if (errorMsg) { <p class="error">{{ errorMsg }}</p> }
+
+        <div class="actions">
+          <button class="btn primary" type="submit" [disabled]="isSubmitting || registerForm.invalid">
+            {{ isSubmitting ? 'Creating…' : 'Register' }}
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</section>
+

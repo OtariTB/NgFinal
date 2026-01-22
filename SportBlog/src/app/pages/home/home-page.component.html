@@ -1,0 +1,21 @@
+<section class="hero card">
+  <div class="hero-inner">
+    <h1>Soccer Central</h1>
+    <p class="muted">Match recaps, training tips, tactics, and transfer talk.</p>
+  </div>
+</section>
+
+<section class="list">
+  @if (posts$ | async; as posts) {
+    <div class="grid">
+      @for (post of posts; track post.id) {
+        <div class="col">
+          <app-post-card [post]="post" />
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="muted">Loading…</p>
+  }
+</section>
+

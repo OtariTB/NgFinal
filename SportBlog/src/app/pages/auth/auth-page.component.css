@@ -1,0 +1,63 @@
+.auth {
+  max-width: 520px;
+  margin: 18px auto 0;
+  overflow: hidden;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.tab {
+  padding: 12px 14px;
+  background: transparent;
+  border: 0;
+  color: rgba(15, 23, 42, 0.80);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.tab.active {
+  background: rgba(22, 163, 74, 0.10);
+  color: #0b1220;
+}
+
+.body {
+  padding: 16px;
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+}
+
+form {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.error {
+  margin: 4px 0 0;
+  color: #fecaca;
+}
+
+.hint {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(22, 163, 74, 0.06);
+  box-shadow: none;
+}
+
+.hint p { margin: 0 0 6px; }
+.hint p:last-child { margin: 0; }
+
