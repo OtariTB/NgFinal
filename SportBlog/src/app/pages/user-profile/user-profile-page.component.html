@@ -1,0 +1,45 @@
+<a class="back muted" routerLink="/">&larr; Back to home</a>
+
+@if (vm$ | async; as vm) {
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <span class="avatar-text">{{ vm.user.name.charAt(0).toUpperCase() }}</span>
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name">{{ vm.user.name }}</h1>
+        <p class="profile-email muted">{{ vm.user.email }}</p>
+        <span class="profile-role" [class.admin]="vm.user.role === 'admin'">
+          {{ vm.user.role === 'admin' ? 'Admin' : 'User' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="stat-item">
+        <span class="stat-value">{{ vm.posts.length }}</span>
+        <span class="stat-label">Posts</span>
+      </div>
+    </div>
+
+    <div class="profile-posts">
+      <h2 class="section-title">Posts by {{ vm.user.name }}</h2>
+      
+      @if (vm.posts.length === 0) {
+        <div class="empty-state">
+          <p class="muted">No posts yet.</p>
+        </div>
+      } @else {
+        <div class="posts-grid">
+          @for (post of vm.posts; track post.id) {
+            <app-post-card [post]="post" />
+          }
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="loading">
+    <p class="muted">Loading profile…</p>
+  </div>
+}

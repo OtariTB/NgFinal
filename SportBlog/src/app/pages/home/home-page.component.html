@@ -1,21 +1,160 @@
-<section class="hero card">
-  <div class="hero-inner">
-    <h1>Soccer Central</h1>
-    <p class="muted">Match recaps, training tips, tactics, and transfer talk.</p>
-  </div>
-</section>
-
-<section class="list">
-  @if (posts$ | async; as posts) {
-    <div class="grid">
-      @for (post of posts; track post.id) {
-        <div class="col">
-          <app-post-card [post]="post" />
+<section class="home-content">
+  @if (allPosts$ | async; as posts) {
+    @if (posts.length > 0) {
+      <div class="content-grid">
+        <!-- Featured Post (Left) -->
+        <div class="featured-post">
+          @if (featuredPost$ | async; as featured) {
+            <article class="featured-card">
+              <a [routerLink]="['/posts', featured.id]" class="featured-link">
+                <div class="featured-image">
+                  <img [src]="featured.image" [alt]="featured.title" />
+                </div>
+                <div class="featured-content">
+                  <h2 class="featured-title">{{ featured.title }}</h2>
+                  <div class="featured-meta">
+                    <a [routerLink]="['/user', featured.authorId]" class="author-link" (click)="$event.stopPropagation()">By {{ featured.authorName }}</a>
+                    <span class="separator">•</span>
+                    <span class="date">{{ featured.createdAt | date: 'MMM d, y' }}</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          }
         </div>
+
+        <!-- Other Posts (Right) -->
+        <div class="other-posts">
+          @if (otherPosts$ | async; as others) {
+            @for (post of others; track post.id) {
+              <article class="post-card-small">
+                <a [routerLink]="['/posts', post.id]" class="post-link">
+                  <div class="post-thumbnail">
+                    <img [src]="post.image" [alt]="post.title" />
+                  </div>
+                  <div class="post-info">
+                    <h3 class="post-title">{{ post.title }}</h3>
+                    <div class="post-meta">
+                      <a [routerLink]="['/user', post.authorId]" class="author-link" (click)="$event.stopPropagation()">By {{ post.authorName }}</a>
+                      <span class="separator">•</span>
+                      <span class="date">{{ post.createdAt | date: 'MMM d, y' }}</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            }
+          }
+        </div>
+      </div>
+
+      <!-- Scrollable Highlights Section -->
+      @if (highlightsPosts$ | async; as highlights) {
+        @if (highlights.length > 0) {
+          <section class="highlights-section">
+            <div class="highlights-header">
+              <h2 class="highlights-title">More Stories</h2>
+              <div class="scroll-buttons">
+                <button 
+                  class="scroll-btn scroll-btn-left" 
+                  (click)="scrollLeft()"
+                  [disabled]="!canScrollLeft"
+                  aria-label="Scroll left"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                  </svg>
+                </button>
+                <button 
+                  class="scroll-btn scroll-btn-right" 
+                  (click)="scrollRight()"
+                  [disabled]="!canScrollRight"
+                  aria-label="Scroll right"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="highlights-wrapper">
+              <div 
+                #highlightsScroll
+                class="highlights-scroll"
+                (scroll)="onScroll()"
+              >
+                <div #highlightsContainer class="highlights-container">
+                  @for (post of highlights; track post.id) {
+                    <article class="highlight-card">
+                      <a [routerLink]="['/posts', post.id]" class="highlight-link">
+                        <div class="highlight-image">
+                          <img [src]="post.image" [alt]="post.title" />
+                        </div>
+                        <div class="highlight-content">
+                          <h3 class="highlight-title">{{ post.title }}</h3>
+                          <div class="highlight-meta">
+                            <a [routerLink]="['/user', post.authorId]" class="author-link" (click)="$event.stopPropagation()">By {{ post.authorName }}</a>
+                            <span class="separator">•</span>
+                            <span class="date">{{ post.createdAt | date: 'MMM d, y' }}</span>
+                          </div>
+                        </div>
+                      </a>
+                    </article>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="scroll-dots">
+              @for (page of getPagesArray(); track page) {
+                <button
+                  class="dot"
+                  [class.active]="page === currentPage"
+                  (click)="scrollToPage(page)"
+                  [attr.aria-label]="'Go to page ' + (page + 1)"
+                ></button>
+              }
+            </div>
+          </section>
+        }
       }
-    </div>
+
+      <!-- Grid Posts Section -->
+      @if (gridPosts$ | async; as gridPosts) {
+        @if (gridPosts.length > 0) {
+          <section class="grid-posts-section">
+            <div class="posts-grid">
+              @for (post of gridPosts; track post.id) {
+                <article class="grid-post-card">
+                  <a [routerLink]="['/posts', post.id]" class="grid-post-link">
+                    <div class="grid-post-image">
+                      <img [src]="post.image" [alt]="post.title" />
+                    </div>
+                    <div class="grid-post-content">
+                      <h3 class="grid-post-title">{{ post.title }}</h3>
+                      <div class="grid-post-meta">
+                        <a [routerLink]="['/user', post.authorId]" class="author-link" (click)="$event.stopPropagation()">By {{ post.authorName }}</a>
+                        <span class="separator">•</span>
+                        <span class="date">{{ post.createdAt | date: 'MMM d, y' }}</span>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              }
+            </div>
+            <div class="view-more-container">
+              <button class="view-more-btn" type="button">VIEW MORE POSTS</button>
+            </div>
+          </section>
+        }
+      }
+    } @else {
+      <div class="empty-state">
+        <p class="muted">No posts found.</p>
+      </div>
+    }
   } @else {
-    <p class="muted">Loading…</p>
+    <div class="loading">
+      <p class="muted">Loading…</p>
+    </div>
   }
 </section>
 

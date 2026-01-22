@@ -100,3 +100,14 @@ textarea {
   text-decoration: underline;
 }
 
+.author-link {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.author-link:hover {
+  color: #15803d;
+  text-decoration: underline;
+}

@@ -1,0 +1,88 @@
+@if (category$ | async; as category) {
+  <div class="category-page">
+    <!-- Category Header Bar -->
+    <div class="category-header-bar">
+      <span class="category-title">{{ getCategoryDisplayName(category) }} category page</span>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section" [style.background-color]="getCategoryColor(category)">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="category-logo">
+            <span class="logo-text">{{ getCategoryDisplayName(category) }}</span>
+          </div>
+          <p class="hero-subtitle">PRESENTED BY TOA SPORTS PERFORMANCE CENTER</p>
+        </div>
+        <div class="hero-right">
+          <div class="sponsors">
+            <p class="sponsor-text">TICKETS SPONSOR StubHub</p>
+            <p class="sponsor-text">OFFICIAL GEAR PARTNER Fanatics</p>
+          </div>
+          <button class="subscribe-btn">SUBSCRIBE</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="main-content">
+      @if (posts$ | async; as posts) {
+        @if (posts.length > 0) {
+          <div class="content-grid">
+            <!-- Featured Post (Left) -->
+            <div class="featured-post">
+              @if (featuredPost$ | async; as featured) {
+                <article class="featured-card">
+                  <a [routerLink]="['/posts', featured.id]" class="featured-link">
+                    <div class="featured-image">
+                      <img [src]="featured.image" [alt]="featured.title" />
+                    </div>
+                    <div class="featured-content">
+                      <h2 class="featured-title">{{ featured.title }}</h2>
+                      <div class="featured-meta">
+                        <span class="author">By {{ featured.authorName }}</span>
+                        <span class="separator">•</span>
+                        <span class="date">{{ featured.createdAt | date: 'MMM d, y' }}</span>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              }
+            </div>
+
+            <!-- Other Posts (Right) -->
+            <div class="other-posts">
+              @if (otherPosts$ | async; as others) {
+                @for (post of others; track post.id) {
+                  <article class="post-card-small">
+                    <a [routerLink]="['/posts', post.id]" class="post-link">
+                      <div class="post-thumbnail">
+                        <img [src]="post.image" [alt]="post.title" />
+                      </div>
+                      <div class="post-info">
+                        <h3 class="post-title">{{ post.title }}</h3>
+                        <div class="post-meta">
+                          <span class="author">By {{ post.authorName }}</span>
+                          <span class="separator">•</span>
+                          <span class="date">{{ post.createdAt | date: 'MMM d, y' }}</span>
+                        </div>
+                      </div>
+                    </a>
+                  </article>
+                }
+              }
+            </div>
+          </div>
+        } @else {
+          <div class="empty-state">
+            <p class="muted">No posts found in this category.</p>
+          </div>
+        }
+      } @else {
+        <div class="loading">
+          <p class="muted">Loading…</p>
+        </div>
+      }
+    </section>
+  </div>
+}

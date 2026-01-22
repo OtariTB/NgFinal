@@ -14,6 +14,14 @@ export class PostService {
     return this.http.get<Post[]>('/api/posts');
   }
 
+  getPostsByCategory(category: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`/api/posts?category=${encodeURIComponent(category)}`);
+  }
+
+  getPostsByAuthor(authorId: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`/api/posts?authorId=${encodeURIComponent(authorId)}`);
+  }
+
   getPost(id: string): Observable<Post> {
     return this.http.get<Post>(`/api/posts/${encodeURIComponent(id)}`);
   }

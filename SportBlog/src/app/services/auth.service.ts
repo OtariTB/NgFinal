@@ -51,6 +51,10 @@ export class AuthService {
     return localStorage.getItem(LS_TOKEN_KEY);
   }
 
+  getUser(id: string): Observable<User> {
+    return this.http.get<User>(`/api/users/${encodeURIComponent(id)}`);
+  }
+
   private persistAuth(res: AuthResponse): void {
     localStorage.setItem(LS_TOKEN_KEY, res.token);
     localStorage.setItem(LS_USER_KEY, JSON.stringify(res.user));

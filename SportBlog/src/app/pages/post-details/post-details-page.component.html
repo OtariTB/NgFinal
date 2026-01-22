@@ -9,7 +9,9 @@
         <span class="muted">{{ post.createdAt | date: 'medium' }}</span>
       </div>
       <h1 class="title">{{ post.title }}</h1>
-      <p class="muted">By {{ post.authorName }}</p>
+      <p class="muted">
+        By <a [routerLink]="['/user', post.authorId]" class="author-link">{{ post.authorName }}</a>
+      </p>
 
       <div class="content">
         <p>{{ post.content }}</p>
